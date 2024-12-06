@@ -31,7 +31,7 @@ parser.add_argument('--target-return', type=float, help='Stops once the return '
 parser.add_argument('--display', action='store_true', help="Use progress bars if "
                     "specified.")
 parser.add_argument('--max-workers', type=int, help='Maximum number of workers.',
-                    default=32)
+                    default=16)
 args = parser.parse_args()
 
 # Max number of workers. M
@@ -177,8 +177,10 @@ while not es.stop():
     # retrieve results
     if args.display:
         pbar = tqdm(total=pop_size * n_samples)
+    # print("Retrieving results...")
     for _ in range(pop_size * n_samples):
         while r_queue.empty():
+            # print("sleeping...")
             sleep(.1)
         r_s_id, r = r_queue.get()
         r_list[r_s_id] += r / n_samples
